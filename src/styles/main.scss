@@ -2,6 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+$colors: (
+  fighting: #ce3f6a,
+  psychic: #f97077,
+  poison: #ab6ac8,
+  dragon: #096dc3,
+  ghost: #5269ab,
+  dark: #595365,
+  ground: #d97746,
+  fire: #fe9c53,
+  fairy: #ec8fe7,
+  water: #4d90d5,
+  flying: #8fa8de,
+  normal: #9098a2,
+  rock: #c6b889,
+  electric: #f4d23b,
+  bug: #90c02c,
+  grass: #63bb5c,
+  ice: #73cebf,
+  steel: #5a8fa1
+);
+
 * {
   margin: 0;
   padding: 0;
@@ -14,4 +35,64 @@ body {
   @apply relative;
   @apply min-h-screen;
   background: theme("colors.black-dark");
+  font-family: theme("fontFamily.flexo");
+}
+
+.pokemon {
+  transition: scale 0.25s;
+
+  &:hover {
+    scale: 1.02;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    filter: blur(150px);
+  }
+
+  &-image {
+    &::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 110%;
+      transform: rotate(-25deg);
+      mask: url("/pokeball-transparent.svg");
+      mask-repeat: no-repeat;
+      mask-position: center;
+      z-index: -1;
+      background-color: transparentize(#fff, 0.8);
+
+      @screen md {
+        right: -4rem;
+      }
+    }
+  }
+}
+
+@each $key, $value in $colors {
+  .bg-#{$key} {
+    background-color: $value;
+  }
+
+  .pokemon {
+    &.#{$key} {
+      box-shadow:
+        0 2px 12px 0px $value,
+        0 -2px 12px 0px $value;
+
+      &::before {
+        background-color: lighten($value, 5);
+      }
+
+      .pokemon {
+        &-index {
+          color: $value;
+        }
+      }
+    }
+  }
 }
