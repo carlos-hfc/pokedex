@@ -29,6 +29,10 @@ const config: Config = {
         steel: '#5a8fa1',
         'black-dark': '#424242'
       },
+      fontFamily: {
+        montserrat: ['var(--montserrat)'],
+        flexo: ['var(--flexo)'],
+      }
     }
   },
   plugins: [],

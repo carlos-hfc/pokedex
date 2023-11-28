@@ -1,11 +1,14 @@
 import type { Metadata } from 'next';
-import { Roboto_Flex } from 'next/font/google';
+import { Montserrat } from 'next/font/google';
+
+import { flexo } from '@/fonts';
 
 import '@/styles/main.min.css';
 
-const roboto = Roboto_Flex({
+const montserrat = Montserrat({
   subsets: ['latin'],
-  weight: ['300', '400', '500', '600', '700']
+  weight: ['300', '400', '500', '600', '700'],
+  variable: "--montserrat"
 });
 
 export const metadata: Metadata = {
@@ -16,7 +19,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode; }) {
   return (
     <html lang="en">
-      <body className={roboto.className}>{children}</body>
+      <body className={[montserrat.variable, flexo.variable].join(" ")}>{children}</body>
     </html>
   );
 }
