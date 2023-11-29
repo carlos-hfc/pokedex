@@ -27,7 +27,8 @@ const config: Config = {
         grass: '#63bb5c',
         ice: '#73cebf',
         steel: '#5a8fa1',
-        'black-dark': '#424242'
+        'black-dark': '#424242',
+        'pokemon-blue': '#3b5ca8'
       },
       fontFamily: {
         montserrat: ['var(--montserrat)'],

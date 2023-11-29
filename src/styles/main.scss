@@ -20,7 +20,8 @@ $colors: (
   bug: #90c02c,
   grass: #63bb5c,
   ice: #73cebf,
-  steel: #5a8fa1
+  steel: #5a8fa1,
+  pokemon-blue: #3b5ca8
 );
 
 * {
@@ -58,18 +59,26 @@ body {
       content: "";
       position: absolute;
       width: 100%;
-      height: 110%;
+      height: 100%;
       transform: rotate(-25deg);
-      mask: url("/pokeball-transparent.svg");
-      mask-repeat: no-repeat;
-      mask-position: center;
+      background-image: url("/pokeball-transparent.svg");
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      filter: invert(1);
+      opacity: 0.2;
       z-index: -1;
-      background-color: transparentize(#fff, 0.8);
 
       @screen md {
         right: -4rem;
       }
     }
+  }
+}
+
+.pagination {
+  .active button {
+    @extend .bg-pokemon-blue;
   }
 }
 
