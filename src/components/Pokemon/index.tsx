@@ -13,13 +13,13 @@ export async function Pokemon({ url }: PokemonProps) {
   const firstType = pokemon?.types?.[0]?.type?.name;
 
   return (
-    <Link href={pokemon?.name} className={`flex flex-col sm:flex-row items-center w-full h-full sm:h-56 rounded-lg gap-4 overflow-hidden relative pokemon ${firstType} cursor-pointer`}>
-      <div className="w-full sm:w-2/4 sm:h-full justify-center items-center sm:items-start flex flex-col pt-6 px-2 pb-0.5 sm:px-4 sm:py-0 gap-2 z-10">
+    <Link href={pokemon?.name} className={`flex flex-col xs:flex-row items-center w-full h-full xs:h-56 rounded-lg gap-4 overflow-hidden relative pokemon ${firstType} cursor-pointer`}>
+      <div className="w-full xs:w-2/4 xs:h-full justify-center items-center xs:items-start flex flex-col pt-6 px-2 pb-0.5 xs:px-4 xs:py-0 gap-2 z-10">
         <div className="text-md font-bold pokemon-index">
           #{String(pokemon?.id).padStart(3, '0')}
         </div>
 
-        <h2 className="capitalize font-bold text-2xl sm:text-4xl text-white">
+        <h2 className="capitalize font-bold text-2xl xs:text-4xl text-white">
           {pokemon?.name}
         </h2>
 
@@ -32,7 +32,7 @@ export async function Pokemon({ url }: PokemonProps) {
         </div>
       </div>
 
-      <div className="w-full md:w-2/4 h-56 flex relative pokemon-image">
+      <div className="w-full xs:w-2/4 h-56 flex relative pokemon-image">
         <Image
           src={pokemon?.sprites?.other?.["official-artwork"]?.front_default ?? pokemon?.sprites?.front_default}
           alt={pokemon?.name}

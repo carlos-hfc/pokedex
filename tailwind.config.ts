@@ -33,6 +33,13 @@ const config: Config = {
       fontFamily: {
         montserrat: ['var(--montserrat)'],
         flexo: ['var(--flexo)'],
+      },
+      screens: {
+        lg: "992px",
+        xs: "425px"
+      },
+      transitionDuration: {
+        250: '250ms',
       }
     }
   },

@@ -42,6 +42,10 @@ body {
 .pokemon {
   transition: scale 0.25s;
 
+  h2 {
+    text-shadow: 0 2px 5px transparentize(#000, 0.2);
+  }
+
   &:hover {
     scale: 1.02;
   }
@@ -69,7 +73,7 @@ body {
       opacity: 0.2;
       z-index: -1;
 
-      @screen md {
+      @screen xs {
         right: -4rem;
       }
     }
@@ -89,9 +93,7 @@ body {
 
   .pokemon {
     &.#{$key} {
-      box-shadow:
-        0 2px 12px 0px $value,
-        0 -2px 12px 0px $value;
+      box-shadow: 0 10px 25px 0px transparentize($value, 0.5);
 
       &::before {
         background-color: lighten($value, 5);
