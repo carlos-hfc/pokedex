@@ -1,28 +1,48 @@
+"use client";
+
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
-import { useCallback } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { DOTS } from '@/constants';
 import { usePagination } from "@/hooks/usePagination";
 
 interface PaginationProps {
-  onPageChange: (page: number) => void;
-  currentPage: number;
   siblingCount?: number;
   totalCount: number;
 }
 
 export function Pagination(props: PaginationProps) {
-  const paginationRange = usePagination(props);
+  const searchParams = useSearchParams();
 
-  if (props.currentPage === 0 || paginationRange.length < 2) return null;
+  const router = useRouter();
+  const params = new URLSearchParams(searchParams);
 
-  const nextPage = useCallback(() => {
-    props.onPageChange(props.currentPage + 1);
-  }, [props.currentPage]);
+  const currentPage = searchParams.get("page") ? Number(searchParams.get("page")) : 1;
 
-  const prevPage = useCallback(() => {
-    props.onPageChange(props.currentPage - 1);
-  }, [props.currentPage]);
+  const paginationRange = usePagination({
+    currentPage,
+    ...props
+  });
+
+  if (currentPage === 0 || paginationRange.length < 2) return <></>;
+
+  const nextPage = () => {
+    params.set('page', String(currentPage + 1));
+
+    router.replace(`/?${params.toString()}`);
+  }
+
+  const prevPage = () => {
+    params.set('page', String(currentPage - 1));
+
+    router.replace(`/?${params.toString()}`);
+  }
+
+  const onPageChange = (page: number) => {
+    params.set('page', String(page));
+
+    router.replace(`/?${params.toString()}`);
+  }
 
   const LAST_PAGE = paginationRange[paginationRange?.length - 1];
 
@@ -34,7 +54,7 @@ export function Pagination(props: PaginationProps) {
             className="border-2 border-white rounded-lg w-10 h-10 flex items-center justify-center text-2xl disabled:opacity-60 disabled:pointer-events-none"
             aria-label="Anterior"
             onClick={prevPage}
-            disabled={props.currentPage === 1}
+            disabled={currentPage === 1}
           >
             <ChevronLeftIcon
               className="stroke-white"
@@ -49,12 +69,12 @@ export function Pagination(props: PaginationProps) {
         {paginationRange?.map((page, i) => (
           <li
             key={`${page}--${i}`}
-            className={`flex items-center justify-center ${props.currentPage === page ? "active" : ""}`}
-            aria-current={props.currentPage === page ? "page" : "false"}
+            className={`flex items-center justify-center ${currentPage === page ? "active" : ""}`}
+            aria-current={searchParams.get('page') === page ? "page" : "false"}
           >
             <button
               className="border-2 border-white rounded-lg w-10 h-10 flex items-center justify-center text-2xl font-semibold text-white"
-              onClick={() => page !== DOTS && props.onPageChange(Number(page))}
+              onClick={() => page !== DOTS && onPageChange(Number(page))}
             >
               {page}
             </button>
@@ -66,7 +86,7 @@ export function Pagination(props: PaginationProps) {
             className="border-2 border-white rounded-lg w-10 h-10 flex items-center justify-center text-2xl disabled:opacity-60 disabled:pointer-events-none"
             aria-label="Próximo"
             onClick={nextPage}
-            disabled={props.currentPage === LAST_PAGE}
+            disabled={currentPage === LAST_PAGE}
           >
             <ChevronRightIcon
               className="stroke-white"

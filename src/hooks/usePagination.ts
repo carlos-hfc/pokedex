@@ -14,7 +14,7 @@ function range(start: number, end: number) {
   return Array.from({ length }, (_, i) => i + start);
 }
 
-export function usePagination({ siblingCount = 1, totalCount, currentPage }: UsePaginationProps) {
+export function usePagination({ siblingCount = 2, totalCount, currentPage }: UsePaginationProps) {
   const paginationRange = useMemo<Array<number | string>>(() => {
     const totalPageCount = Math.ceil(totalCount / PAGE_SIZE);
 
