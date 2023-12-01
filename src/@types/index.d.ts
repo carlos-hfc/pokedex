@@ -1,8 +1,9 @@
 export type PokemonResponse = {
+  count: number;
   results: {
     url: string;
   }[];
-}
+};
 
 export type PokemonType = {
   abilities: Ability[];
@@ -183,4 +184,10 @@ export type Stat = {
 export type Type = {
   slot: number;
   type: Species;
+};
+
+export type SearchPokemon = {
+  name?: string;
+  type?: string;
+  page: string;
 };
