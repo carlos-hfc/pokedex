@@ -86,6 +86,12 @@ body {
   }
 }
 
+.filter-type {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @each $key, $value in $colors {
   .bg-#{$key} {
     background-color: $value;
@@ -93,7 +99,9 @@ body {
 
   .pokemon {
     &.#{$key} {
-      box-shadow: 0 10px 25px 0px transparentize($value, 0.5);
+      box-shadow:
+        0 10px 25px transparentize($value, 0.5),
+        0 -1px 25px transparentize($value, 0.5);
 
       &::before {
         background-color: lighten($value, 5);
