@@ -12,11 +12,11 @@ export async function getAll(search: SearchPokemon) {
     };
   }
 
-  // if (search?.type) {
-  //   const response = await getByType(search.type);
+  if (search?.type) {
+    const response = await getByType(search.type);
 
-  //   return response;
-  // }
+    return response;
+  }
 
   const response = await api.get<PokemonResponse>("/pokemon", {
     params: {
@@ -50,7 +50,7 @@ export async function getByName(name: string) {
 export async function getByType(type: string) {
   const response = await api.get(`/type/${type}`);
 
-  const data = await Promise.all(response.data.pokemon.map(async (result) => {
+  const data = await Promise.all(response.data.pokemon.map(async (result: any) => {
     return await getByUrl(result.pokemon.url);
   }));
 

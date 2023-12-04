@@ -39,18 +39,30 @@ export function FilterProvider(props: Readonly<FilterProviderProps>) {
     setName(event.target.value);
   }
 
-  function handleType(type: string) {
-    setType(prev => prev === type ? '' : type);
+  function handleType(newType: string) {
+    if (newType === type) {
+      params.delete("type");
 
-    params.set('type', type);
+      setType("");
 
-    router.replace(`/?${params.toString()}`);
+      return router.push(`/?${params.toString()}`);
+    }
+
+    setType(newType);
+
+    params.set('type', newType);
+
+    return router.push(`/?${params.toString()}`);
   }
 
   function sendFilter(event: FormEvent) {
     event.preventDefault();
 
-    if (!name) return;
+    if (!name) {
+      params.delete("name");
+
+      return router.push("/");
+    }
 
     params.set('name', name);
 

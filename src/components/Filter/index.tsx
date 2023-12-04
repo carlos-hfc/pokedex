@@ -3,10 +3,16 @@
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { useRef } from "react";
 
-import { FilterTypes } from "../FilterTypes";
 import { Input } from "../Input";
+import { Type } from "../Type";
 
-export function Filter() {
+interface FilterProps {
+  types: {
+    name: string;
+  }[];
+}
+
+export function Filter({ types }: FilterProps) {
   const scrollRef = useRef({} as HTMLDivElement);
 
   function scrollTypes(scroll: number) {
@@ -32,7 +38,12 @@ export function Filter() {
             ref={scrollRef}
             className="flex flex-row gap-1 items-center relative overflow-auto filter-type touch-pan-x lg:gap-3 scroll-smooth"
           >
-            <FilterTypes />
+            {types?.map(type => (
+              <Type
+                key={type.name}
+                name={type.name}
+              />
+            ))}
           </div>
 
           <button onClick={() => scrollTypes(114)}>
