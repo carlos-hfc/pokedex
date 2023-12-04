@@ -51,7 +51,7 @@ export function Pagination(props: PaginationProps) {
       <ul className="flex gap-2 items-center justify-center">
         <li className="flex items-center justify-center">
           <button
-            className="border-2 border-white rounded-lg w-10 h-10 flex items-center justify-center text-2xl disabled:opacity-60 disabled:pointer-events-none"
+            className="border-2 border-white rounded-lg w-10 h-10 flex items-center justify-center text-lg disabled:opacity-60 disabled:pointer-events-none"
             aria-label="Anterior"
             onClick={prevPage}
             disabled={currentPage === 1}
@@ -59,8 +59,8 @@ export function Pagination(props: PaginationProps) {
             <ChevronLeftIcon
               className="stroke-white"
               aria-hidden="true"
-              width={24}
-              height={24}
+              width={20}
+              height={20}
               strokeWidth={2.5}
             />
           </button>
@@ -73,7 +73,7 @@ export function Pagination(props: PaginationProps) {
             aria-current={searchParams.get('page') === page ? "page" : "false"}
           >
             <button
-              className="border-2 border-white rounded-lg w-10 h-10 flex items-center justify-center text-2xl font-semibold text-white"
+              className="border-2 border-white rounded-lg w-10 h-10 flex items-center justify-center text-lg font-semibold text-white"
               onClick={() => page !== DOTS && onPageChange(Number(page))}
             >
               {page}
@@ -83,7 +83,7 @@ export function Pagination(props: PaginationProps) {
 
         <li className="flex items-center justify-center">
           <button
-            className="border-2 border-white rounded-lg w-10 h-10 flex items-center justify-center text-2xl disabled:opacity-60 disabled:pointer-events-none"
+            className="border-2 border-white rounded-lg w-10 h-10 flex items-center justify-center text-lg disabled:opacity-60 disabled:pointer-events-none"
             aria-label="Próximo"
             onClick={nextPage}
             disabled={currentPage === LAST_PAGE}
@@ -91,8 +91,8 @@ export function Pagination(props: PaginationProps) {
             <ChevronRightIcon
               className="stroke-white"
               aria-hidden="true"
-              width={24}
-              height={24}
+              width={20}
+              height={20}
               strokeWidth={2.5}
             />
           </button>
