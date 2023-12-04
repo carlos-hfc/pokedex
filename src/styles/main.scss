@@ -41,6 +41,7 @@ body {
 
 .pokemon {
   transition: scale 0.25s;
+  animation: linear 0.5s down;
 
   h2 {
     text-shadow: 0 2px 5px transparentize(#000, 0.2);
@@ -59,6 +60,11 @@ body {
   }
 
   &-image {
+    img {
+      transition: transform 0.5s;
+      animation: linear 0.5s toRight;
+    }
+
     &::after {
       content: "";
       position: absolute;
@@ -80,6 +86,19 @@ body {
   }
 }
 
+.loader {
+  height: 100dvh;
+  background: rgba(255, 255, 255, 0.2);
+
+  &-container {
+    background-image: url("/pokeball-transparent.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    animation: infinite 1s rotate;
+  }
+}
+
 .pagination {
   .active button {
     @extend .bg-pokemon-blue;
@@ -89,6 +108,33 @@ body {
 .filter-type {
   &::-webkit-scrollbar {
     display: none;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    rotate: 360deg
+  }
+  100% {
+    rotate: 0deg
+  }
+}
+
+@keyframes down {
+  0% {
+    transform: translateY(-50px);
+  }
+  100% {
+    transform: initial;
+  }
+}
+
+@keyframes toRight {
+  0% {
+    transform: translateX(100px);
+  }
+  100% {
+    transform: initial;
   }
 }
 
