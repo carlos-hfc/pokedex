@@ -40,9 +40,21 @@ const config: Config = {
       },
       transitionDuration: {
         250: '250ms',
+      },
+      height: {
+        inherit: "inherit"
+      },
+      dropShadow: {
+        text: '0 2px 2px rgba(0,0,0,.8)'
       }
-    }
+    },
   },
+  safelist: [
+    {
+      pattern: /(bg|text)-+/,
+      variants: ['before']
+    }
+  ],
   plugins: [],
 };
 export default config;
