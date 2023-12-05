@@ -13,7 +13,10 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: 'Pokédex App',
+  title: {
+    template: "%s | Pokédex App",
+    default: "Pokédex App"
+  },
   description: 'Pokédex App',
 };
 
