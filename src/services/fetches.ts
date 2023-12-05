@@ -41,7 +41,7 @@ export async function getByUrl(url: string) {
   return response.data;
 }
 
-export async function getByName(name: string) {
+export async function getByName<T extends {}>(name: string): Promise<T> {
   const response = await api.get(`/pokemon/${name}`);
 
   return response.data;
