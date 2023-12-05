@@ -50,6 +50,8 @@ export function FilterProvider(props: Readonly<FilterProviderProps>) {
 
     setType(newType);
 
+    params.delete('name');
+    params.delete('page');
     params.set('type', newType);
 
     return router.push(`/?${params.toString()}`);
@@ -64,9 +66,11 @@ export function FilterProvider(props: Readonly<FilterProviderProps>) {
       return router.push("/");
     }
 
+    params.delete('page');
+    params.delete('type');
     params.set('name', name);
 
-    router.replace(`/?${params.toString()}`);
+    router.push(`/?${params.toString()}`);
   }
 
   return (
