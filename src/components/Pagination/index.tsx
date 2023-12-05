@@ -48,7 +48,7 @@ export function Pagination(props: PaginationProps) {
 
   return (
     <nav aria-label="Paginação de Pokémons" className="pagination">
-      <ul className="flex gap-2 items-center justify-center">
+      <ul className="flex gap-2 items-center justify-center flex-wrap">
         <li className="flex items-center justify-center">
           <button
             className="border-2 border-white rounded-lg w-10 h-10 flex items-center justify-center text-lg disabled:opacity-60 disabled:pointer-events-none"
