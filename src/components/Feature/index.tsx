@@ -31,14 +31,14 @@ export async function Feature() {
             {pokemon.types.map((item, i) => (
               <span
                 key={`${item}-${String(i)}`}
-                className={`bg-${item.type.name} text-white px-3 py-0.5 rounded shadow-lg`}
+                className={`capitalize bg-${item.type.name} text-white px-3 py-0.5 rounded shadow-lg`}
               >
                 {item.type.name}
               </span>
             ))}
           </div>
 
-          <h2 className="capitalize font-bold text-4xl text-white md:text-5xl">
+          <h2 className="capitalize text-center font-bold text-4xl text-white md:text-5xl">
             {pokemon.name}
           </h2>
 
@@ -59,7 +59,7 @@ export async function Feature() {
             className="object-contain"
           />
         </div>
-      </div >
-    </div >
+      </div>
+    </div>
   );
 }
