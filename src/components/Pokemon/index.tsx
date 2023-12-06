@@ -7,7 +7,7 @@ export async function Pokemon(props: PokemonType) {
   const firstType = props?.types?.[0]?.type?.name;
 
   return (
-    <Link href={props?.name} className={`flex flex-col xs:flex-row items-center w-full h-full xs:h-56 rounded-lg gap-2 xs:gap-4 overflow-hidden relative pokemon ${firstType} cursor-pointer`}>
+    <Link scroll={false} href={props?.name} className={`flex flex-col xs:flex-row items-center w-full h-full xs:h-56 rounded-lg gap-2 xs:gap-4 overflow-hidden relative pokemon ${firstType} cursor-pointer`}>
       <div className="w-full xs:w-2/4 xs:h-full justify-center items-center xs:items-start flex flex-col pt-6 px-2 pb-0.5 xs:px-4 xs:py-0 gap-2 z-10">
         <div className="text-md font-bold pokemon-index">
           #{String(props?.id).padStart(4, '0')}

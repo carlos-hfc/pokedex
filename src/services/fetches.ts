@@ -1,13 +1,13 @@
 import axios from "axios";
 
 import { api } from "./api";
-import { PokemonResponse, PokemonType, SearchPokemon } from "@/@types";
+import { PokemonResponse, PokemonType, SearchPokemon, Species } from "@/@types";
 import { PAGE_SIZE } from "@/constants";
 
 export async function getAll(search: SearchPokemon) {
   if (search?.name) {
     return {
-      data: [await getByName(search.name)],
+      data: [await getByNameOrId(search.name)],
       total: 1
     };
   }
@@ -41,7 +41,7 @@ export async function getByUrl(url: string) {
   return response.data;
 }
 
-export async function getByName<T extends {}>(name: string): Promise<T> {
+export async function getByNameOrId<T extends {}>(name: number | string): Promise<T> {
   const response = await api.get(`/pokemon/${name}`);
 
   return response.data;
@@ -61,7 +61,7 @@ export async function getByType(type: string) {
 }
 
 export async function getTypes() {
-  const response = await api.get<{ results: { name: string; }[]; }>("/type");
+  const response = await api.get<{ results: Species[]; }>("/type");
 
   return response.data.results
     .filter(type => type.name !== 'unknown' && type.name !== 'shadow')
