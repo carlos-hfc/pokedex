@@ -191,3 +191,9 @@ export type SearchPokemon = {
   type?: string;
   page: string;
 };
+
+export type Generation = {
+  id: number;
+  name: string;
+  pokemon_species: Species[];
+};
