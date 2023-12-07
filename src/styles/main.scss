@@ -146,6 +146,10 @@ body {
   }
 }
 
+.progress-bar {
+  animation: increase 1s backwards;
+}
+
 .filter-type {
   &::-webkit-scrollbar {
     display: none;
@@ -176,6 +180,12 @@ body {
   }
   100% {
     transform: initial;
+  }
+}
+
+@keyframes increase {
+  0% {
+    transform: translateX(-110%);
   }
 }
 
