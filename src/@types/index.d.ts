@@ -197,3 +197,8 @@ export type Generation = {
   name: string;
   pokemon_species: Species[];
 };
+
+export type EvolutionChain = {
+  evolves_to: EvolutionChain[];
+  species: Species;
+};
