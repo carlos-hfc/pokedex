@@ -1,8 +1,9 @@
 import axios from "axios";
 
 import { api } from "./api";
-import { PokemonResponse, PokemonType, SearchPokemon, Species } from "@/@types";
+import { EvolutionChain, PokemonResponse, PokemonType, SearchPokemon, Species } from "@/@types";
 import { PAGE_SIZE } from "@/constants";
+import { normalizeEvolutionChain } from "@/utils";
 
 export async function getAll(search: SearchPokemon) {
   if (search?.name) {
@@ -66,4 +67,38 @@ export async function getTypes() {
   return response.data.results
     .filter(type => type.name !== 'unknown' && type.name !== 'shadow')
     .sort((a, b) => a.name < b.name ? -1 : 1);
+}
+
+export async function getEvolution(name: string) {
+  const species = await api.get<{ evolution_chain: Species; }>(`/pokemon-species/${name}`);
+
+  const response = await axios.get<{ chain: EvolutionChain; }>(species.data.evolution_chain.url);
+
+  if (response.data.chain.evolves_to.length > 1) {
+    const evolutions = normalizeEvolutionChain(response.data.chain);
+
+    const data = [] as { current: PokemonType, next: PokemonType; }[];
+
+    for (const item of evolutions) {
+      let obj = {} as { current: PokemonType; next: PokemonType; };
+      Object.assign(obj, {
+        current: await getByNameOrId<PokemonType>(item.current),
+        next: await getByNameOrId<PokemonType>(item.next),
+      });
+      data.push(obj);
+    }
+
+    return data;
+  }
+
+  const evolves: string[] = [];
+  let chain = response.data.chain;
+
+  do {
+    evolves.push(chain.species.name);
+
+    chain = chain.evolves_to[0];
+  } while (!!chain && chain.hasOwnProperty('evolves_to'));
+
+  return await Promise.all(evolves.map(evolve => getByNameOrId<PokemonType>(evolve)));
 }
