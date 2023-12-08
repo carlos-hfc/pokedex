@@ -1,16 +1,26 @@
 import axios from "axios";
+import { notFound } from "next/navigation";
 
 import { api } from "./api";
 import { EvolutionChain, PokemonResponse, PokemonType, SearchPokemon, Species } from "@/@types";
 import { PAGE_SIZE } from "@/constants";
 import { normalizeEvolutionChain } from "@/utils";
 
-export async function getAll(search: SearchPokemon) {
+export async function getAll(search: SearchPokemon): Promise<{ data: PokemonType[], total: number; }> {
   if (search?.name) {
-    return {
-      data: [await getByNameOrId(search.name)],
-      total: 1
-    };
+    try {
+      const data = await getByNameOrId(search.name);
+
+      return {
+        data: [data],
+        total: !data ? 0 : 1
+      };
+    } catch (error) {
+      return {
+        data: [],
+        total: 0
+      };
+    }
   }
 
   if (search?.type) {
@@ -42,10 +52,14 @@ export async function getByUrl(url: string) {
   return response.data;
 }
 
-export async function getByNameOrId<T extends {}>(name: number | string): Promise<T> {
-  const response = await api.get(`/pokemon/${name}`);
+export async function getByNameOrId(name: number | string) {
+  try {
+    const response = await api.get<PokemonType>(`/pokemon/${name}`);
 
-  return response.data;
+    return response.data;
+  } catch (error) {
+    notFound();
+  }
 }
 
 export async function getByType(type: string) {
@@ -82,8 +96,8 @@ export async function getEvolution(name: string) {
     for (const item of evolutions) {
       let obj = {} as { current: PokemonType; next: PokemonType; };
       Object.assign(obj, {
-        current: await getByNameOrId<PokemonType>(item.current),
-        next: await getByNameOrId<PokemonType>(item.next),
+        current: await getByNameOrId(item.current),
+        next: await getByNameOrId(item.next),
       });
       data.push(obj);
     }
@@ -100,5 +114,5 @@ export async function getEvolution(name: string) {
     chain = chain.evolves_to[0];
   } while (!!chain && chain.hasOwnProperty('evolves_to'));
 
-  return await Promise.all(evolves.map(evolve => getByNameOrId<PokemonType>(evolve)));
+  return await Promise.all(evolves.map(evolve => getByNameOrId(evolve)));
 }

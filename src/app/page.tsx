@@ -3,24 +3,20 @@ import { Suspense } from "react";
 import Loading from "./loading";
 
 import { SearchPokemon } from "@/@types";
-
 import { Feature } from "@/components/Feature";
 import { Filter } from "@/components/Filter";
 import { Pagination } from "@/components/Pagination";
 import { Pokemon } from "@/components/Pokemon";
-
 import { FilterProvider } from "@/contexts/FilterContext";
-
 import { getAll, getTypes } from "@/services/fetches";
 
 import '@/styles/main.min.css';
 
-export default async function Home({
-  searchParams,
-}: {
-  params: { slug: string; };
+interface HomeProps {
   searchParams: SearchPokemon;
-}) {
+}
+
+export default async function Home({ searchParams }: HomeProps) {
   const pokemons = await getAll(searchParams);
   const types = await getTypes();
 
@@ -35,18 +31,28 @@ export default async function Home({
               <Filter types={types} />
             </div>
 
+            {pokemons.total <= 0 && (
+              <div>
+                lista vazia
+              </div>
+            )}
+
             <div className="grid grid-flow-row-dense md:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-x-6 md:gap-y-8">
-              {pokemons.data?.map((p, i) => (
-                <Pokemon
-                  key={i}
-                  {...p}
-                />
-              ))}
+              <Suspense key={pokemons.data.join("")} fallback={<Loading />}>
+                {pokemons?.data?.map((p, i) => (
+                  <Pokemon
+                    key={i}
+                    {...p}
+                  />
+                ))}
+              </Suspense>
             </div>
 
-            <div className="flex items-center justify-center py-8">
-              <Pagination totalCount={pokemons.total} />
-            </div>
+            {pokemons.total > 1 && (
+              <div className="flex items-center justify-center py-8">
+                <Pagination totalCount={pokemons.total} />
+              </div>
+            )}
           </div>
         </main>
       </Suspense>
