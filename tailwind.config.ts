@@ -28,7 +28,8 @@ const config: Config = {
         ice: '#73cebf',
         steel: '#5a8fa1',
         'black-dark': '#424242',
-        'pokemon-blue': '#3b5ca8'
+        'pokemon-blue': '#3b5ca8',
+        'pokemon-red': '#e3350d',
       },
       fontFamily: {
         montserrat: ['var(--montserrat)'],

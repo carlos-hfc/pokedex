@@ -21,7 +21,8 @@ $colors: (
   grass: #63bb5c,
   ice: #73cebf,
   steel: #5a8fa1,
-  pokemon-blue: #3b5ca8
+  pokemon-blue: #3b5ca8,
+  pokemon-red: #e3350d
 );
 
 * {
@@ -129,14 +130,9 @@ body {
 
 .loader {
   height: 100dvh;
-  background: rgba(255, 255, 255, 0.2);
 
   &-container {
     background-image: url("/pokeball-transparent.svg");
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    animation: infinite 1s rotate;
   }
 }
 
@@ -153,15 +149,6 @@ body {
 .filter-type {
   &::-webkit-scrollbar {
     display: none;
-  }
-}
-
-@keyframes rotate {
-  0% {
-    rotate: 360deg;
-  }
-  100% {
-    rotate: 0deg;
   }
 }
 
