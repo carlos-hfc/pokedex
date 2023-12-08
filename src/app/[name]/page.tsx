@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function Pokemon({ params }: Props) {
-  const pokemon = await getByNameOrId<PokemonType>(params.name);
+  const pokemon = await getByNameOrId(params.name);
   const evolutions: Evolution[] = await getEvolution(pokemon.name);
 
   const firstType = pokemon.types[0].type.name;
@@ -128,8 +128,11 @@ export default async function Pokemon({ params }: Props) {
               <strong className="text-white text-2xl md:text-4xl">Evoluções</strong>
 
               <div className="flex">
-                {evolutions.map(evolution => (
-                  <ShowEvolution {...evolution} />
+                {evolutions.map((evolution, i) => (
+                  <ShowEvolution
+                    key={i.toString().padStart(4, '0')}
+                    {...evolution}
+                  />
                 ))}
               </div>
             </div>
