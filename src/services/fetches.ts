@@ -84,35 +84,39 @@ export async function getTypes() {
 }
 
 export async function getEvolution(name: string) {
-  const species = await api.get<{ evolution_chain: Species; }>(`/pokemon-species/${name}`);
+  try {
+    const species = await api.get<{ evolution_chain: Species; }>(`/pokemon-species/${name}`);
 
-  const response = await axios.get<{ chain: EvolutionChain; }>(species.data.evolution_chain.url);
+    const response = await axios.get<{ chain: EvolutionChain; }>(species.data.evolution_chain.url);
 
-  if (response.data.chain.evolves_to.length > 1) {
-    const evolutions = normalizeEvolutionChain(response.data.chain);
+    if (response.data.chain.evolves_to.length > 1) {
+      const evolutions = normalizeEvolutionChain(response.data.chain);
 
-    const data = [] as { current: PokemonType, next: PokemonType; }[];
+      const data = {
+        current: await getByNameOrId(evolutions.current),
+        next: [] as PokemonType[]
+      };
 
-    for (const item of evolutions) {
-      let obj = {} as { current: PokemonType; next: PokemonType; };
-      Object.assign(obj, {
-        current: await getByNameOrId(item.current),
-        next: await getByNameOrId(item.next),
-      });
-      data.push(obj);
+      for (const item of evolutions.next) {
+        const pokemon = await getByNameOrId(item);
+
+        data.next.push(pokemon);
+      }
+
+      return [data];
     }
 
-    return data;
+    const evolves: string[] = [];
+    let chain = response.data.chain;
+
+    do {
+      evolves.push(chain.species.name);
+
+      chain = chain.evolves_to[0];
+    } while (!!chain && chain.hasOwnProperty('evolves_to'));
+
+    return await Promise.all(evolves.map(evolve => getByNameOrId(evolve)));
+  } catch (error) {
+    return [];
   }
-
-  const evolves: string[] = [];
-  let chain = response.data.chain;
-
-  do {
-    evolves.push(chain.species.name);
-
-    chain = chain.evolves_to[0];
-  } while (!!chain && chain.hasOwnProperty('evolves_to'));
-
-  return await Promise.all(evolves.map(evolve => getByNameOrId(evolve)));
 }
