@@ -87,6 +87,24 @@ body {
   }
 }
 
+.evolution {
+  &::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transform: rotate(-25deg);
+    background-image: url("/pokeball-transparent.svg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    filter: invert(1);
+    opacity: 0.1;
+    z-index: -1;
+    pointer-events: none;
+  }
+}
+
 .feature {
   h2,
   &-index {

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { PokemonType } from "@/@types";
+import { padId } from "@/utils";
 
 async function getRandmonPokemon() {
   const response = await fetch('http://localhost:3000/api/feature', {
@@ -24,7 +25,7 @@ export async function Feature() {
       <div className="container max-w-7xl mx-auto px-4 flex flex-col items-center w-full justify-between gap-4 relative md:flex-row md:px-8">
         <div className="w-full justify-center items-center flex flex-col gap-4 md:w-1/2">
           <div className={`text-2xl font-bold ${firstType === 'dark' ? 'text-white' : `text-${firstType}`} md:text-3xl feature-index`}>
-            #{String(pokemon.id).padStart(4, '0')}
+            {padId(pokemon.id)}
           </div>
 
           <div className="flex flex-row gap-2 md:gap-4">

@@ -1,9 +1,13 @@
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
+import { Fragment } from "react";
 
 import { PokemonType } from "@/@types";
 import { Progress } from "@/components/Progress";
 import { getByNameOrId, getEvolution } from "@/services/fetches";
+import { padId } from "@/utils";
 
 interface Props {
   params: {
@@ -13,7 +17,7 @@ interface Props {
 
 type Evolution = ({
   current: PokemonType;
-  next: PokemonType;
+  next: PokemonType[];
 }) | PokemonType;
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -24,19 +28,129 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function Pokemon({ params }: Props) {
   const pokemon = await getByNameOrId(params.name);
-  const evolutions: Evolution[] = await getEvolution(pokemon.name);
+  const evolutions = await getEvolution(pokemon.name);
 
   const firstType = pokemon.types[0].type.name;
 
   function ShowEvolution(evolution: Evolution) {
     if ('current' in evolution) {
       return (
-        <div className="flex" />
+        <div className="flex flex-col items-center justify-center gap-4 lg:flex-row lg:justify-between w-full">
+          <Link
+            href={evolution.current.name}
+            className="flex flex-col items-center justify-center relative z-[1] evolution lg:min-w-[33%]"
+          >
+            <div className="relative flex w-full aspect-square p-4 max-h-36">
+              <Image
+                src={evolution.current.sprites?.other?.["official-artwork"]?.front_default ?? ""}
+                alt={evolution.current.name}
+                fill
+                loading="lazy"
+                className="object-contain"
+              />
+            </div>
+
+            <div className="flex flex-col text-center gap-1">
+              <div className="text-xl font-semibold capitalize flex flex-wrap gap-2 lg:text-2xl">
+                {evolution.current.name}
+                <span className="text-slate-300">
+                  {padId(evolution.current.id)}
+                </span>
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-1">
+                {evolution.current.types.map((item, i) => (
+                  <span
+                    key={padId(i) + item}
+                    className={`px-3 py-0.5 rounded text-sm bg-${item.type.name} shadow`}
+                  >
+                    {item.type.name}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </Link>
+
+          <ChevronDownIcon
+            className="w-24 h-24 stroke-[2.5] lg:-rotate-90"
+          />
+
+          <div className="flex flex-row flex-wrap items-center justify-center text-center gap-3 lg:w-1/2 lg:gap-6">
+            {evolution.next.map((next, i) => (
+              <Link
+                key={padId(i) + next}
+                href={next.name}
+                className="flex flex-col items-center justify-center relative z-[1] evolution"
+              >
+                <div className="relative flex w-full aspect-square p-4 max-h-36">
+                  <Image
+                    src={next.sprites?.other?.["official-artwork"]?.front_default ?? ""}
+                    alt={next.name}
+                    fill
+                    loading="lazy"
+                    className="object-contain"
+                  />
+                </div>
+                <div className="flex flex-col text-center gap-1">
+                  <div className="text-xl font-semibold capitalize flex flex-wrap gap-2 lg:text-2xl">
+                    {next.name}
+                    <span className="text-slate-300">
+                      {padId(next.id)}
+                    </span>
+                  </div>
+                  <div className="flex flex-wrap items-center justify-center gap-1">
+                    {next.types.map((item, i) => (
+                      <span
+                        key={padId(i) + item}
+                        className={`px-3 py-0.5 rounded text-sm bg-${item.type.name} shadow`}
+                      >
+                        {item.type.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
       );
     }
 
     return (
-      <div className="flex" />
+      <Link
+        href={evolution.name}
+        className="flex flex-col items-center justify-center relative z-[1] evolution"
+      >
+        <div className="relative flex w-full aspect-square p-4 max-h-36">
+          <Image
+            src={evolution.sprites?.other?.["official-artwork"]?.front_default ?? ""}
+            alt={evolution.name}
+            fill
+            loading="lazy"
+            className="object-contain"
+          />
+        </div>
+
+        <div className="flex flex-col text-center gap-1">
+          <div className="text-xl font-semibold capitalize flex flex-wrap gap-2 lg:text-2xl">
+            {evolution.name}
+
+            <span className="text-slate-300">
+              {padId(evolution.id)}
+            </span>
+          </div>
+
+          <div className="flex flex-wrap items-center justify-center gap-1">
+            {evolution.types.map((item, i) => (
+              <span
+                key={padId(i) + item}
+                className={`px-3 py-0.5 rounded text-sm bg-${item.type.name} shadow`}
+              >
+                {item.type.name}
+              </span>
+            ))}
+          </div>
+        </div>
+      </Link>
     );
   }
 
@@ -48,7 +162,7 @@ export default async function Pokemon({ params }: Props) {
             {pokemon.name}
 
             <span className="text-slate-300 font-semibold">
-              #{String(pokemon.id).padStart(4, '0')}
+              {padId(pokemon.id)}
             </span>
           </h1>
 
@@ -103,7 +217,7 @@ export default async function Pokemon({ params }: Props) {
                     {pokemon.stats.map(item => (
                       <li
                         key={item.stat.name}
-                        className="flex flex-col justify-between text-white items-center gap-0.5 md:flex-row md:gap-2"
+                        className="flex flex-col justify-between text-white items-center gap-0.5 sm:flex-row sm:gap-2 md:flex-col lg:flex-row"
                       >
                         <span className="capitalize w-full font-medium lg:text-lg text-base">
                           {item.stat.name.replaceAll('-', ' ')}
@@ -124,18 +238,25 @@ export default async function Pokemon({ params }: Props) {
               </ul>
             </div>
 
-            <div className="flex flex-col rounded-md bg-neutral-600 h-32 w-full p-4 md:p-6">
-              <strong className="text-white text-2xl md:text-4xl">Evoluções</strong>
+            {evolutions?.length > 0 && (
+              <div className="flex flex-col gap-8 rounded-md bg-neutral-600 w-full p-4 md:p-6 text-white">
+                <strong className="text-2xl md:text-4xl">Evoluções</strong>
 
-              <div className="flex">
-                {evolutions.map((evolution, i) => (
-                  <ShowEvolution
-                    key={i.toString().padStart(4, '0')}
-                    {...evolution}
-                  />
-                ))}
+                <div className="flex flex-col items-center justify-center gap-8 lg:flex-row">
+                  {evolutions?.map((evolution, i) => (
+                    <Fragment key={padId(i)}>
+                      {!("current" in evolution) && i !== 0 && (
+                        <ChevronDownIcon
+                          className="w-24 h-24 stroke-[2.5] lg:-rotate-90"
+                        />
+                      )}
+
+                      <ShowEvolution {...evolution} />
+                    </Fragment>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
