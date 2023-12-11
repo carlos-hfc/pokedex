@@ -32,7 +32,6 @@ const config: Config = {
         'pokemon-red': '#e3350d',
       },
       fontFamily: {
-        montserrat: ['var(--montserrat)'],
         flexo: ['var(--flexo)'],
       },
       screens: {
