@@ -4,6 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
 
+import { sharedMetadata } from "../shared-metadata";
+
 import { PokemonType } from "@/@types";
 import { Progress } from "@/components/Progress";
 import { getByNameOrId, getEvolution } from "@/services/fetches";
@@ -22,7 +24,16 @@ type Evolution = ({
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
-    title: params.name.charAt(0).toUpperCase() + params.name.slice(1)
+    ...sharedMetadata,
+    title: params.name.charAt(0).toUpperCase() + params.name.slice(1),
+    twitter: {
+      ...sharedMetadata.twitter,
+      title: params.name.charAt(0).toUpperCase() + params.name.slice(1),
+    },
+    openGraph: {
+      ...sharedMetadata.openGraph,
+      title: params.name.charAt(0).toUpperCase() + params.name.slice(1),
+    }
   };
 }
 
