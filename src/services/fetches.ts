@@ -24,26 +24,40 @@ export async function getAll(search: SearchPokemon): Promise<{ data: PokemonType
   }
 
   if (search?.type) {
-    const response = await getByType(search.type);
+    try {
+      const response = await getByType(search.type);
 
-    return response;
+      return response;
+    } catch (error) {
+      return {
+        data: [],
+        total: 0
+      };
+    }
   }
 
-  const response = await api.get<PokemonResponse>("/pokemon", {
-    params: {
-      limit: PAGE_SIZE,
-      offset: (Number(search.page) - 1) * PAGE_SIZE
-    }
-  });
+  try {
+    const response = await api.get<PokemonResponse>("/pokemon", {
+      params: {
+        limit: PAGE_SIZE,
+        offset: (Number(search.page) - 1) * PAGE_SIZE
+      }
+    });
 
-  const data = await Promise.all(response.data.results.map(async (result) => {
-    return await getByUrl(result.url);
-  }));
+    const data = await Promise.all(response.data.results.map(async (result) => {
+      return await getByUrl(result.url);
+    }));
 
-  return {
-    data,
-    total: response.data.count
-  };
+    return {
+      data,
+      total: response.data.count
+    };
+  } catch (error) {
+    return {
+      data: [],
+      total: 0
+    };
+  }
 }
 
 export async function getByUrl(url: string) {
@@ -63,24 +77,35 @@ export async function getByNameOrId(name: number | string) {
 }
 
 export async function getByType(type: string) {
-  const response = await api.get(`/type/${type}`);
+  try {
+    const response = await api.get(`/type/${type}`);
 
-  const data = await Promise.all(response.data.pokemon.map(async (result: any) => {
-    return await getByUrl(result.pokemon.url);
-  }));
+    const data = await Promise.all(response.data.pokemon.map(async (result: any) => {
+      return await getByUrl(result.pokemon.url);
+    }));
 
-  return {
-    data,
-    total: 1
-  };
+    return {
+      data,
+      total: 1
+    };
+  } catch (error) {
+    return {
+      data: [],
+      total: 0
+    };
+  }
 }
 
 export async function getTypes() {
-  const response = await api.get<{ results: Species[]; }>("/type");
+  try {
+    const response = await api.get<{ results: Species[]; }>("/type");
 
-  return response.data.results
-    .filter(type => type.name !== 'unknown' && type.name !== 'shadow')
-    .sort((a, b) => a.name < b.name ? -1 : 1);
+    return response.data.results
+      .filter(type => type.name !== 'unknown' && type.name !== 'shadow')
+      .sort((a, b) => a.name < b.name ? -1 : 1);
+  } catch (error) {
+    return [];
+  }
 }
 
 export async function getEvolution(name: string) {
