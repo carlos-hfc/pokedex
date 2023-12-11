@@ -1,18 +1,47 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { PokemonType } from "@/@types";
+import { Generation, PokemonType } from "@/@types";
 import { padId } from "@/utils";
+import { getAll } from "@/services/fetches";
+
+function randomize(total: number) {
+  return (Math.random() * (total - 1) + 1).toFixed(0);
+}
 
 async function getRandmonPokemon() {
-  const response = await fetch('http://localhost:3000/api/feature', {
-    next: {
-      revalidate: 3600
-    }
-  });
 
-  const data = await response.json() as PokemonType;
-  return data;
+  const { total } = await getAll({ page: '0' });
+
+  const random = randomize(total);
+
+  try {
+    const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${random}`, {
+      next: {
+        revalidate: 3600
+      }
+    });
+
+    return await response.json() as PokemonType;
+  } catch (error) {
+    const response = await fetch("/generation/1", {
+      next: {
+        revalidate: 3600
+      }
+    });
+
+    const generation = await response.json() as Generation;
+
+    const random = randomize(generation.pokemon_species.length);
+
+    const pokemon = await fetch(`https://pokeapi.co/api/v2/pokemon/${random}`, {
+      next: {
+        revalidate: 3600
+      }
+    });
+
+    return await pokemon.json() as PokemonType;
+  }
 }
 
 export async function Feature() {
