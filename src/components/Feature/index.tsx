@@ -24,7 +24,7 @@ async function getRandmonPokemon() {
 
     return await response.json() as PokemonType;
   } catch (error) {
-    const response = await fetch("/generation/1", {
+    const response = await fetch("https://pokeapi.co/api/v2/generation/1", {
       next: {
         revalidate: 3600
       }
