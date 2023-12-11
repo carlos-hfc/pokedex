@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Suspense } from "react";
 
 import Loading from "./loading";
@@ -31,22 +32,35 @@ export default async function Home({ searchParams }: HomeProps) {
               <Filter types={types} />
             </div>
 
-            {pokemons.total <= 0 && (
-              <div>
-                lista vazia
-              </div>
-            )}
-
-            <div className="grid grid-flow-row-dense md:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-x-6 md:gap-y-8">
-              <Suspense key={pokemons.data.join("")} fallback={<Loading />}>
-                {pokemons?.data?.map((p, i) => (
-                  <Pokemon
-                    key={i}
-                    {...p}
+            <Suspense key={pokemons.data.join("")} fallback={<Loading />}>
+              {pokemons.total <= 0 && (
+                <div className="flex flex-col items-center justify-center gap-4 text-center">
+                  <Image
+                    src="/pikachu.gif"
+                    alt="Pikachu triste"
+                    width={497}
+                    height={276}
+                    loading="lazy"
+                    className="object-contain rounded-md"
                   />
-                ))}
-              </Suspense>
-            </div>
+
+                  <strong className="text-white text-3xl">
+                    Pokémon não encontrado
+                  </strong>
+                </div>
+              )}
+
+              {pokemons.total > 0 && (
+                <div className="grid grid-flow-row-dense md:grid-cols-2 xl:grid-cols-3 gap-8 md:gap-x-6 md:gap-y-8">
+                  {pokemons?.data?.map((p, i) => (
+                    <Pokemon
+                      key={i}
+                      {...p}
+                    />
+                  ))}
+                </div>
+              )}
+            </Suspense>
 
             {pokemons.total > 1 && (
               <div className="flex items-center justify-center py-8">
