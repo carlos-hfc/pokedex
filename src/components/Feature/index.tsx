@@ -5,7 +5,9 @@ import { PokemonType } from "@/@types";
 import { padId } from "@/utils";
 
 async function getRandmonPokemon() {
-  const response = await fetch(`${new URL(process.env.VERCEL_URL ?? 'http://localhost:3000')}/api/feature`, {
+  const base = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'
+  
+  const response = await fetch(`${base}/api/feature`, {
     next: {
       revalidate: 3600
     }
