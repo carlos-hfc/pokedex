@@ -1,3 +1,4 @@
+import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -5,8 +6,9 @@ import { PokemonType } from "@/@types";
 import { padId } from "@/utils";
 
 async function getRandmonPokemon() {
-  const base = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}/api/feature` : 'http://localhost:3000/api/feature'
-  
+  const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
+  const base = `${protocol}://${headers().get("host")}/api/feature`;
+
   const response = await fetch(base, {
     next: {
       revalidate: 3600
