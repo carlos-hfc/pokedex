@@ -31,7 +31,7 @@ npm install
 
 4. Crie um arquivo `.env.local` na raíz do projeto e adicione a BASE_URL para pegar um Pokémon aleatório como destaque:
 
-```bash
+```env
 NEXT_PUBLIC_BASE_URL=http://localhost:3000
 ```
 
@@ -46,7 +46,7 @@ npm run dev
 ## Uso da Aplicação
 
 1. Abra o navegador e acesse [http://localhost:3000](http://localhost:3000).
-2. Explore a Pokedex, filtre-os por tipo, nome e visualize as evoluções de cada um.
+2. Explore a Pokédex, filtre-os por tipo, nome e visualize as evoluções de cada um.
 
 ## Tecnologias Utilizadas
 
