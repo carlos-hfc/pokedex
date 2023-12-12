@@ -7,7 +7,7 @@ import { padId } from "@/utils";
 
 async function getRandmonPokemon() {
   const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
-  const base = `${protocol}://${headers().get("host")}/api/feature`;
+  const base = `${process.env.NEXT_PUBLIC_BASE_URL ?? "http://localhost:3000"}/api/feature`;
 
   const response = await fetch(base, {
     next: {
