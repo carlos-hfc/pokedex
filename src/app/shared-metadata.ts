@@ -17,7 +17,7 @@ export const sharedMetadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    url: new URL(`https://${process.env.VERCEL_URL}`),
+    url: new URL(String(process.env.NEXT_PUBLIC_BASE_URL)),
     title: {
       template: "%s | Pokédex App",
       default: "Pokédex App"
@@ -57,5 +57,5 @@ export const sharedMetadata: Metadata = {
     }
   ],
   category: 'technology',
-  metadataBase: new URL(`https://${process.env.VERCEL_URL}`)
+  metadataBase: new URL(String(process.env.NEXT_PUBLIC_BASE_URL))
 };
