@@ -1,10 +1,12 @@
+import { cn } from "@/utils"
+
 interface ProgressProps {
-  value: number;
-  type: string;
+  value: number
+  type: string
 }
 
 export function Progress(props: ProgressProps) {
-  const percent = Math.round(props.value * 100) / 200;
+  const percent = Math.round(props.value * 100) / 200
 
   return (
     <div
@@ -16,10 +18,12 @@ export function Progress(props: ProgressProps) {
     >
       <div
         role="presentation"
-        aria-valuenow={percent}
-        className={`h-full rounded-xl bg-${props.type} progress-bar`}
+        className={cn(
+          "h-full rounded-xl animate-[increase_2s_backwards]",
+          `bg-${props.type}`,
+        )}
         style={{ width: `${percent}%` }}
       />
     </div>
-  );
+  )
 }

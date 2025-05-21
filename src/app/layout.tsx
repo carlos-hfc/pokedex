@@ -1,21 +1,31 @@
-import type { Metadata } from 'next';
+import "@/styles/main.css"
 
-import { sharedMetadata } from "./shared-metadata";
+import type { Metadata } from "next"
 
-import { Header } from "@/components/Header";
-import { flexo } from '@/fonts';
+import { Header } from "@/components/header"
+import { flexo } from "@/fonts"
+import { cn } from "@/utils"
 
-import '@/styles/main.min.css';
+import { sharedMetadata } from "./shared-metadata"
 
-export const metadata: Metadata = sharedMetadata;
+export const metadata: Metadata = sharedMetadata
 
-export default function RootLayout({ children }: { children: React.ReactNode; }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="pt">
-      <body className={[flexo.variable].join(" ")}>
+      <body
+        className={cn(
+          flexo.variable,
+          "flex flex-col relative min-h-screen bg-black-dark font-flexo",
+        )}
+      >
         <Header />
         {children}
       </body>
     </html>
-  );
+  )
 }

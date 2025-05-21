@@ -1,28 +1,30 @@
-"use client";
+"use client"
 
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
-import { useRef } from "react";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline"
+import { useRef } from "react"
 
-import { Input } from "../Input";
-import { Type } from "../Type";
+import { Input } from "./input"
+import { Type } from "./type"
 
 interface FilterProps {
   types: {
-    name: string;
-  }[];
+    name: string
+  }[]
 }
 
 export function Filter({ types }: FilterProps) {
-  const scrollRef = useRef({} as HTMLDivElement);
+  const scrollRef = useRef({} as HTMLDivElement)
 
   function scrollTypes(scroll: number) {
-    scrollRef.current.scrollLeft += scroll;
+    scrollRef.current.scrollLeft += scroll
   }
 
   return (
     <div className="flex flex-col gap-4 w-full sm:flex-row items-center sm:items-end sm:justify-between mb-6">
       <div className="flex flex-col gap-2 w-full sm:w-1/2 lg:w-2/5 lg:gap-4">
-        <h2 className="text-white font-bold text-2xl lg:text-3xl">Pesquisar por tipo</h2>
+        <h2 className="text-white font-bold text-2xl lg:text-3xl">
+          Pesquisar por tipo
+        </h2>
 
         <div className="flex flex-row gap-2">
           <button onClick={() => scrollTypes(-114)}>
@@ -36,7 +38,7 @@ export function Filter({ types }: FilterProps) {
 
           <div
             ref={scrollRef}
-            className="flex flex-row gap-1 items-center relative overflow-auto filter-type touch-pan-x lg:gap-3 scroll-smooth"
+            className="flex flex-row gap-1 items-center relative overflow-auto touch-pan-x lg:gap-3 scroll-smooth scrollbar-none"
           >
             {types?.map(type => (
               <Type
@@ -61,5 +63,5 @@ export function Filter({ types }: FilterProps) {
         <Input />
       </div>
     </div>
-  );
+  )
 }

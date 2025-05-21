@@ -1,2 +1,2 @@
-export const DOTS = '...';
-export const PAGE_SIZE = 18;
+export const DOTS = "..."
+export const PAGE_SIZE = 18

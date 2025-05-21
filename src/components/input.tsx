@@ -1,15 +1,15 @@
-import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
-import { useSearchParams } from "next/navigation";
-import { InputHTMLAttributes } from "react";
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline"
+import { useSearchParams } from "next/navigation"
+import { InputHTMLAttributes } from "react"
 
-import { useFilter } from "@/contexts/FilterContext";
+import { useFilter } from "@/contexts/FilterContext"
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {}
 
 export function Input(props: InputProps) {
-  const { handleName, sendFilter } = useFilter();
+  const { handleName, sendFilter } = useFilter()
 
-  const searchParams = useSearchParams();
+  const searchParams = useSearchParams()
 
   return (
     <div className="flex flex-col transition-all duration-250 focus-within:shadow-md focus-within:shadow-pokemon-blue/50 overflow-hidden rounded-md">
@@ -47,5 +47,5 @@ export function Input(props: InputProps) {
         </div>
       </form>
     </div>
-  );
+  )
 }
