@@ -1,29 +1,47 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from "next/server"
 
-import { Generation } from "@/@types";
-import { api } from "@/services/api";
-import { getAll } from "@/services/fetches";
+import { Generation, PokemonType } from "@/@types"
+import { api } from "@/services/api"
+import { getAll } from "@/services/get-all"
 
 function randomize(total: number) {
-  return (Math.random() * (total - 1) + 1).toFixed(0);
+  return (Math.random() * (total - 1) + 1).toFixed(0)
 }
 
 export async function GET() {
-  const { total } = await getAll({ page: '0' });
+  const { total } = await getAll({ page: "0" })
 
-  const random = randomize(total);
+  const random = randomize(total)
 
   try {
-    const response = await api.get(`/pokemon/${random}`);
+    const response = await api(`/pokemon/${random}`, {
+      next: {
+        revalidate: false,
+      },
+    })
 
-    return NextResponse.json(response.data);
+    const data = (await response.json()) as PokemonType
+
+    return NextResponse.json(data)
   } catch (error) {
-    const generation = await api.get<Generation>("/generation/1");
+    const generationResponse = await api("/generation/1", {
+      next: {
+        revalidate: false,
+      },
+    })
 
-    const random = randomize(generation.data.pokemon_species.length);
+    const generationData = (await generationResponse.json()) as Generation
 
-    const pokemon = await api.get(`/pokemon/${random}`);
+    const random = randomize(generationData.pokemon_species.length)
 
-    return NextResponse.json(pokemon.data);
+    const pokemonResponse = await api(`/pokemon/${random}`, {
+      next: {
+        revalidate: false,
+      },
+    })
+
+    const pokemonData = (await pokemonResponse.json()) as PokemonType
+
+    return NextResponse.json(pokemonData)
   }
 }

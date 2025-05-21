@@ -11,11 +11,14 @@
   "dependencies": {
     "@heroicons/react": "^2.0.18",
     "axios": "^1.6.2",
-    "next": "14.0.3",
+    "next": "^14.2.28",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "zod": "^3.25.7"
   },
   "devDependencies": {
+    "@ch-faustino/eslint-config": "^1.0.1",
+    "@next/eslint-plugin-next": "^15.3.2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
